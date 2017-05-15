@@ -275,6 +275,11 @@ func (wrk *_workers) workerRoutine(
 		return
 	}
 	call := func(t *Task) {
+		// if payload is nil, decode error, exit
+		if t.P == nil {
+			return
+		}
+
 		reported := false
 		defer func() {
 			if r := recover(); r != nil {

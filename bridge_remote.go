@@ -470,6 +470,11 @@ func (bdg *remoteBridge) listenerRoutines(
 	out := func(b []byte) {
 		if t, err := bdg.trans.DecodeTask(b); err != nil {
 			events <- NewEventFromError(ObjT.Bridge, err)
+			h, _ := DecodeHeader(b)
+			output <- &Task{
+				H: h,
+				P: nil,
+			}
 		} else {
 			output <- t
 		}
