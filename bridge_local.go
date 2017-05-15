@@ -55,6 +55,15 @@ func (bdg *localBridge) Close() (err error) {
 	return
 }
 
+func (bdg *localBridge) Expect(types int) (err error) {
+	if types != ObjT.Bridge {
+		err = fmt.Errorf("Unsupported types: %v", types)
+		return
+	}
+
+	return
+}
+
 func (bdg *localBridge) SendTask(t *Task) (err error) {
 	bdg.objLock.RLock()
 	defer bdg.objLock.RUnlock()

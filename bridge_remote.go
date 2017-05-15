@@ -2,6 +2,7 @@ package dingo
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 )
 
@@ -57,6 +58,15 @@ func (bdg *remoteBridge) Events() ([]<-chan *Event, error) {
 	return []<-chan *Event{
 		bdg.events,
 	}, nil
+}
+
+func (bdg *remoteBridge) Expect(types int) (err error) {
+	if types != ObjT.Bridge {
+		err = fmt.Errorf("Unsupported types: %v", types)
+		return
+	}
+
+	return
 }
 
 func (bdg *remoteBridge) SendTask(t *Task) (err error) {

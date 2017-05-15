@@ -17,6 +17,7 @@ type bridge interface {
 
 	Close() (err error)
 	Events() ([]<-chan *Event, error)
+	Expect(types int) (err error)
 
 	//
 	// proxy for Producer

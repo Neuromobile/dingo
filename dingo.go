@@ -114,7 +114,6 @@ func NewApp(mode string, cfg *Config) (app *App, err error) {
 		trans:    newFnMgr(mode),
 		cfg:      *cfg,
 	}
-	v.b = newBridge(mode, v.trans)
 
 	// refer to 'ReadMostly' example in sync/atomic
 	v.eventOut.Store(make(map[int]*_eventListener))
@@ -142,6 +141,11 @@ func NewApp(mode string, cfg *Config) (app *App, err error) {
 		err = fmt.Errorf("Unable to allocate mux routine: %v", remain)
 	}
 
+	// init bridge
+	v.b = newBridge(mode, v.trans)
+	if err = v.attachObject(v.b, ObjT.Bridge); err != nil {
+		return
+	}
 	// init mappers
 	if v.mappers, err = newMappers(v.trans, v.b.(exHooks)); err != nil {
 		return
